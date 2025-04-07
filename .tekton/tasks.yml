@@ -54,6 +54,14 @@ spec:
       script: |
         #!/bin/bash
         set -e
+        echo "Contents of workspace:"
+        ls -la $(workspaces.source.path)
+        
         python -m pip install --upgrade pip wheel
-        pip install -r requirements.txt
+        if [ -f "requirements.txt" ]; then
+          pip install -r requirements.txt
+        else
+          echo "ERROR: requirements.txt not found!"
+          exit 1
+        fi
         nosetests $(params.args)
